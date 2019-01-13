@@ -375,9 +375,6 @@
 		if(document.getElementById("iframe").contentDocument.title=="") document.getElementById('file-name').innerText = "Untitled";
 		else document.getElementById('file-name').innerText = document.getElementById("iframe").contentDocument.title;
 		document.getElementById('file-name').setAttribute("uk-tooltip", "title: " + GetFilename(location_file) );
-		if(GetFilename(gup('file', document.location)).toLowerCase().indexOf("adrian")>-1){
-			  document.getElementById('tobar').setAttribute("class", "topbar adrain");
-		  }
 	}
 	function reloadiframe(){
 		var iframe = document.getElementById('iframe');

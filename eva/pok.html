@@ -1,0 +1,281 @@
+<html>
+<body>
+<style>
+body {
+  background-color: #f4dc26;
+  overflow: hidden;
+}
+
+.face {
+  margin: 0 auto;
+  width: 300px;
+  height: 300px;
+  transform: translateY(80px);
+}
+
+@keyframes animset {
+  0%   {opacity: 0.5;}
+  50%  {opacity: 1;}
+  100% {opacity: 0.5;}
+}
+
+.anim{
+	animation-name: animset;
+  animation-duration: 3s;
+}
+
+.eye {
+  width: 100px;
+  height: 100px;
+  background-color: #232222;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.eye.right {
+  transform: translateX(-40px);
+}
+
+.shine {
+  margin: 0 auto;
+  position:absolute;
+  width: 40px;
+  height: 40px;
+  background-color: #FFF;
+  border-radius: 50%;
+  right: 10px; top: 20px;
+}
+
+.shine.left {
+  transform: translateX(-40px);
+}
+
+.eye.left {
+   transform: translateX(140px);
+}
+
+.blink {
+  position: absolute;
+  width: 100px;  
+  height: 50px;
+  border-radius: 50%;
+  border-top: 10px solid #232222;
+  top: 30px; left: -40px;
+  visibility: hidden;
+}
+
+.blink2 {
+  position: absolute;
+  width: 100px;  
+  height: 50px;
+  border-radius: 50%;
+  border-top: 10px solid #232222;
+  top: 30px; left: 10px;
+  visibility: hidden;
+}
+
+.blush {
+  background-color: #e92929;
+  width: 100px;
+  height:100px;
+  border-radius: 50%;
+  margin: 120px; position: absolute;
+  top: 0;
+  opacity: 0.5;
+}
+
+
+.blush.left {
+  transform: translateX(-250px);
+}
+
+.blush.right {
+  transform: translateX(210px);
+}
+
+.nose {
+  width: 30px;
+  height: 20px;
+  border-radius: 40%;
+  background-color: #000;
+  transform: translateX(140px);
+}
+
+.mouth {
+  position: absolute;
+  width: 170px;  
+  height: 20px;
+  border-radius: 0% 0% 100% 100%;
+  border-bottom: 4px solid;
+  top: 200px; left: 75px;
+}
+
+.mouth.two {
+  transform: translateX(300px);
+}
+
+.close {
+  position: absolute;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  top: 10px;
+  right: 10px;
+  overflow: hidden;
+}
+.close:hover::before, .close:hover::after {
+  opacity: 0.5;
+}
+.close::before, .close::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  margin-top: -1px;
+  background: #000;
+}
+.close::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.close::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.close.big {
+  -webkit-transform: scale(3);
+  -moz-transform: scale(3);
+  -ms-transform: scale(3);
+  -o-transform: scale(3);
+  transform: scale(3);
+}
+.close.hairline::before, .close.hairline::after {
+  height: 1px;
+}
+.close.thick::before, .close.thick::after {
+  height: 4px;
+  margin-top: -2px;
+}
+.close.black::before, .close.black::after {
+  height: 8px;
+  margin-top: -4px;
+}
+.close.heavy::before, .close.heavy::after {
+  height: 12px;
+  margin-top: -6px;
+}
+.close.pointy::Before, .close.pointy::after {
+  width: 200%;
+  left: -50%;
+}
+.close.rounded::before, .close.rounded::after {
+  border-radius: 5px;
+}
+.close.blades::before, .close.blades::after {
+  border-radius: 5px 0;
+}
+.close.warp::before, .close.warp::after {
+  border-radius: 120% 0;
+}
+.close.fat::before, .close.fat::after {
+  border-radius: 100%;
+}
+
+small {
+  display: block;
+  padding: 5rem;
+  font: .8rem/1 sans-serif;
+  color: #777;
+  text-align: center;
+}
+
+small a {
+  color: #1ebcc5;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+}
+
+small a:hover {
+  border-bottom-color: #222;
+}
+
+</style>
+
+<div class="face" onclick="blinkin()">
+  <div class="blink"></div>
+<div class="eye right eye-right">
+  <div class="shine right"></div> 
+ </div>
+<div class="eye left eye-left">
+	<div class="blink2"></div>
+	<div class="shine left"></div> 
+	</div>
+  <div class="blush left"> </div>
+  <div class="blush right"> </div>
+  <div class="nose"> </div>
+<div class="mouth"></div>
+</div>
+
+<script>
+	namimation = false;
+	
+function blinkin() {
+	if(!namimation){
+	namimation = true;
+  clearInterval( crpy );
+  offbink();
+  setTimeout("blibnk()", 400 );
+}
+}
+
+
+function blibnk(){
+  document.getElementsByClassName("blink")[0].style.visibility = "visible";
+  document.getElementsByClassName("eye-right")[0].style.visibility = "hidden";
+  setTimeout("blinkout()", 500);
+  
+}
+
+function dscsdc(){
+	document.getElementsByClassName("blush")[0].classList.remove("anim");
+  document.getElementsByClassName("blush")[1].classList.remove("anim");
+  namimation = false;
+  crpy = setInterval("autobink()", 3000);
+}
+
+function blinkout() {
+  document.getElementsByClassName("blink")[0].style.visibility = "hidden";
+  document.getElementsByClassName("eye-right")[0].style.visibility = "visible";
+  document.getElementsByClassName("blush")[0].classList.add("anim");
+  document.getElementsByClassName("blush")[1].classList.add("anim");
+  setTimeout("dscsdc()", 5000);
+}
+
+crpy = setInterval("autobink()", 3000);
+
+function autobink(){
+	document.getElementsByClassName("blink")[0].style.visibility = "visible";
+  document.getElementsByClassName("eye-right")[0].style.visibility = "hidden";
+  document.getElementsByClassName("blink2")[0].style.visibility = "visible";
+  document.getElementsByClassName("eye-left")[0].style.visibility = "hidden";
+	setTimeout("offbink()", 200);
+}
+
+function offbink(){
+	document.getElementsByClassName("blink")[0].style.visibility = "hidden";
+  document.getElementsByClassName("eye-right")[0].style.visibility = "visible";
+  document.getElementsByClassName("blink2")[0].style.visibility = "hidden";
+  document.getElementsByClassName("eye-left")[0].style.visibility = "visible";
+}
+</script>
+</body>
+</html>
+

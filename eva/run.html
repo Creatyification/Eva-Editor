@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+<title>Eva Editor</title>
+<style type="text/css" media="screen">
+	:root {
+		--theme-color: #7F00FF;
+		--theme-color-dark: #7F00FF;
+	}
+	
+    .frame {position: absolute; z-index: 9 !important; top: 30px; left: 0px; right: 0; bottom: 0; }
+	.frame iframe {
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		transition: border-color 1s cubic-bezier(1, 1, 1, 1);
+		transition-delay: 0s;
+		-webkit-box-sizing: border-box;
+		display: block; width: 100%; height: 100%; 
+		border-left: 1px solid #d6d6d6;
+        border-right: 1px solid #d6d6d6;
+        border-bottom: 1px solid #d6d6d6;
+		}
+	
+	/*.frame {display: block; width: 100%; height: 100%;}
+	.frame iframe {display: block; width: 100%; height: 100%;}*/
+    
+    .topbar{
+		position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        box-shadow: 0 3px 20px 0 rgba(0,0,0,.35);
+        position: fixed;
+        background-color: #ffffff;
+        width: 100%;
+        height: 40px;
+        z-index: 999;
+        -webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.adrain{
+		background-image: url('images/bg.gif');
+        background-size: 400px 400px;
+	}
+	
+	.btn-icon{
+		font-size: 24px;
+		color: #999999;
+		height: 38px;
+		width: 40px;
+		outline:none;
+		background-color: rgba(0,0,0,0);
+		border: none;
+	}
+	
+	.btn-icon:hover{
+		color: #7F00FF;
+		border: none;
+		outline:none;
+	}
+	
+	.btn-icon:active{
+		color: #7F00FF;
+		border: none;
+		outline:none;
+	}
+	
+	.btn-logo{
+		font-family: 'logo';
+		font-size: 28px;
+		color: #ffffff;
+		position: absolute;
+        top: 0;
+        left: 0;
+		height: 40px;
+		outline:none;
+		background: linear-gradient(to right, #7F00FF, #8E2DE2);
+		z-index: 999;
+		border: none;
+		margin-top: 0px;
+	}
+	
+	.btn-close{
+		font-family: 'logo';
+		position: absolute;
+        top: 0;
+        right: 0;
+		outline:none;
+		z-index: 999;
+		margin-top: 0px;
+		font-size: 24px;
+		color: #999999;
+		height: 38px;
+		width: 95px;
+		text-align: right;
+		background-color: rgba(0,0,0,0);
+		border: none;
+	}
+	
+	.logo-screen{
+		background: linear-gradient(to right, #7F00FF, #8E2DE2);
+		z-index: 9999999;
+		position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 100%;
+	}
+	
+	.logo-con{
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-pack: center;
+		-ms-flex-pack: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		-webkit-align-items: center;
+		align-items: center;
+		height: 100%;
+	}
+	
+	.logo-pic{
+		width: 20%;
+		text-align: center;
+	}
+	
+	.text-screen{
+		position: absolute;
+        bottom: 3%;
+        right: 0;
+        width: 100%;
+        color: #ffffff;
+        text-align: center;
+        z-index: 999999999;
+	}
+	
+	.text-des{
+		color: #ffffff;
+		margin: 0 0 0 0;
+		font-family: 'textz';
+	}
+	
+	body{
+		font-family: 'textz' !important;
+		border: 5px solid #d6d6d6;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.uk-width-auto{
+		width: 40px !important;
+	}
+	
+	.right-click-cont{
+		position: absolute;
+        top: 0;
+        display: none;
+        left: 0;
+		outline:none;
+		z-index: 99999999;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0,0,0,0);
+	}
+	
+	.right-click-menu{
+		position: absolute;
+        top: 0;
+        left: 0;
+		outline:none;
+		z-index: 9999999999;
+		height: auto;
+		width: auto;
+		padding: 10px 20px 10px 20px;
+		box-shadow: 0 3px 20px 0 rgba(0,0,0,.15);
+		background-color: #ffffff;
+		border-radius: 5px;
+	}
+	
+	.dark-key-lin a{
+		color: #999999 !important;
+	}
+	
+	#menu{
+		background: linear-gradient(to right, #7F00FF, #8E2DE2);
+		border-radius: 5px;
+		box-shadow: 0 3px 20px 0 rgba(0,0,0,.15);
+		margin-left: 10px;
+		
+	}
+	
+	.menu-link a{
+		color: #ffffff !important;
+	}
+	
+	.btn-icon-text{
+		font-size: 17px;
+		color: #999999;
+		height: 38px;
+		width: auto;
+		outline:none;
+		background-color: rgba(0,0,0,0);
+		border: none;
+		font-family: 'textz' !important;
+	}
+	
+	.btn-icon-text-con{
+		width: auto !important;
+	}
+	
+	.uk-notification {
+		width: 200px!important;
+	}
+
+	.uk-notification-message {
+		padding: 10px !important;
+		font-size: 1rem !important;
+	}
+	
+	.uk-notification-close {
+		top: 13px !important;
+	}
+</style>
+<link rel="stylesheet" href="css/uikit.css" />
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/animate.css" />
+<link rel="stylesheet" href="css/icons.css">
+<script src="js/jquery.js"></script>
+<script src="js/uikit.js"></script>
+<script>
+	iframe_err_int = setInterval("on_iframe_error()",10);
+</script>
+</head>
+<body oncontextmenu="return false" id="body" onresize="OnResizeWindow()" onload="loadfilefromurl();">
+<input type="file" id="file-input" />
+
+
+
+
+<div class="loading" id="loading" style="display: none;"><div class="loding-cont"><center><span class="uk-margin-small-right progress" uk-spinner="ratio: 3"></span></center></div></div>
+<div class="topbar" id="tobar">
+	<div class="uk-child-width-8-8@m" uk-grid>
+		<div class="uk-width-auto" style="width: 60px !important;">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon icon-replay" onclick='reloadiframe();' uk-tooltip="title: Reload"></button>
+		</div>
+		<div class="uk-width-auto btn-icon-text-con">
+			<button class="btn-icon-text" id="file-name"></button><span class="icon-info" onclick="info();"></span>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-expand" style="-webkit-app-region: drag;">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon" ></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon" ></button>
+		</div>
+	</div>
+</div>
+<button class="btn-logo">run</button>
+
+<div uk-dropdown="mode: click" id="menu">
+    <ul class="uk-nav uk-dropdown-nav">
+        <li class="uk-active menu-link" onclick="document.getElementById('iframe').contentWindow.history.back();"><a href="#">Go back</a></li>
+        <li class="uk-active menu-link" onclick="document.getElementById('iframe').contentWindow.history.forward();"><a href="#">Go forward</a></li>
+        <li class="uk-active menu-link" onclick="location.reload()"><a href="#">Reload</a></li>
+        <li class="uk-active menu-link" onclick="enadisadebug()"><a href="#" id="debutog">Disable debug</a></li>
+    </ul>
+</div>
+
+<div class="btn-close">
+	<button class="btn-icon icon-remove" onclick='minapp()' style="width: 35px !important; text-align: right;"></button>
+	<button class="btn-icon icon-close" onclick='closeapp()' style="width: 35px !important; text-align: right;"></button>
+</div>
+
+<div class="frame">
+	<iframe id="iframe" onload="titlef(); on_iframe_error();"></iframe> 
+</div>
+
+    
+<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+	
+	var cutpasteshow = false;
+	var fs = require('fs');
+	var current_file = "";
+	
+	if(getCookie("debug")==""){
+		setCookie("debug", "true");
+	}
+	else if(getCookie("debug")=="true"){
+		document.getElementById("debutog").innerText = "Disable debug";
+	}
+	else {
+		document.getElementById("debutog").innerText = "Enable debug";
+		clearInterval(iframe_err_int);
+	}
+	
+	const ipc = require('electron').ipcRenderer;
+
+	ipc.on('file', (event, message) => {
+		loadfile(message);
+	});
+	
+	function enadisadebug(){
+		if(getCookie("debug")=="true"){
+			setCookie("debug", "false");
+			document.getElementById("debutog").innerText = "Enable debug";
+			clearInterval(iframe_err_int);
+			showpop("Debug disabled");
+		}
+		else {
+			setCookie("debug", "true");
+			document.getElementById("debutog").innerText = "Disable debug";
+			iframe_err_int = setInterval("on_iframe_error()",10);
+			showpop("Debug enabled");
+		}
+	}
+	
+	function showerror(msg, url, lineinco, col, error){
+		if(getCookie("debug")=="true"){
+			line = lineinco-1;
+			const { remote } = require('electron');
+			if(GetFilename(location_file)==GetFilename(document.getElementById('iframe').contentWindow.location.href)) remote.BrowserWindow.getAllWindows()[0].send("errorline", line);
+			var extra = !col ? '' : '\ncolumn: ' + col;
+			extra += !error ? '' : '\nerror: ' + error;
+			"Error: " + msg + "<br>url: " + url + "<br>line: " + line + extra
+			htz = '<ul class="uk-list uk-list-divider"><li>Error   :  ' + msg + '</li> <li>Line   :  ' + line + '</li> <li>Column   :  ' + col + '</li> <li>File   :  ' + url + '</li></ul>';
+			 UIkit.modal.alert('<h3 class="uk-modal-title alert-heading uk-dark">Error in javascript</h3>'+htz).then(function () {
+				   console.log('Alert closed.')
+			 });
+         }
+	}
+	
+	function on_iframe_error(){
+		document.getElementById("iframe").contentWindow.onerror= function(_a,_b,_c,_d,_e) {
+			showerror(_a,_b,_c,_d,_e);
+			return false;
+		}
+	}
+	
+	document.addEventListener('dragover', event => event.preventDefault())
+	document.addEventListener('drop', event => event.preventDefault())
+	
+	function titlef(){
+		if(document.getElementById("iframe").contentDocument.title=="") document.getElementById('file-name').innerText = "Untitled";
+		else document.getElementById('file-name').innerText = document.getElementById("iframe").contentDocument.title;
+		document.getElementById('file-name').setAttribute("uk-tooltip", "title: " + GetFilename(location_file) );
+		if(GetFilename(gup('file', document.location)).toLowerCase().indexOf("adrian")>-1){
+			  document.getElementById('tobar').setAttribute("class", "topbar adrain");
+		  }
+	}
+	function reloadiframe(){
+		var iframe = document.getElementById('iframe');
+		iframe.src = iframe.src;
+	}
+	
+	function info(){
+		UIkit.modal.dialog('<p class="uk-modal-body"><b>Home file : </b>'+location_file+'<br><b>Current file : </b>'+document.getElementById('iframe').contentWindow.location.href+'</p>');
+	}
+	
+	function gup( name, url ) {
+		if (!url) url = location.href;
+		name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+		var regexS = "[\\?&]"+name+"=([^&#]*)";
+		var regex = new RegExp( regexS );
+		var results = regex.exec( url );
+		return results == null ? null : results[1];
+	}
+	
+	function loadfilefromurl(){
+		document.getElementById('iframe').src = gup('file', document.location);
+		location_file = gup('file', document.location);
+		//document.getElementById('file-name').innerText = GetFilename(gup('file', document.location));
+		//document.getElementById('file-name').setAttribute("uk-tooltip", "title: " + gup('file', document.location).replace("file:///", "") ); 
+	}
+	
+	function loadfile(fi){
+		document.getElementById('iframe').src = fi;
+		location_file = fi;
+		//document.getElementById('file-name').innerText = GetFilename(fi);
+		//document.getElementById('file-name').setAttribute("uk-tooltip", "title: " + fi.replace("file:///", "")); 
+		showpop("Loaded");
+	}
+
+	
+	function GetFilename(url)
+	{
+	   return url.split("/")[(url.split("/").length-1)];
+	}
+    
+
+	function showpop(c){
+		UIkit.notification(c, {pos: 'bottom-right'});
+	}
+	
+	function getUserHome() {
+	  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+	}
+	
+	
+	function WhichButton(event) {
+		if(event.button==2){
+			console.log(event);
+			//UIkit.dropdown("#rightclick").show();
+			document.getElementById("right-click-cont").style.display = "block";
+			document.getElementById("right-click-menu").style.top = event.clientY + "px";
+			document.getElementById("right-click-menu").style.left = event.clientX + "px";
+			cutpasteshow = true;
+			return 0;
+		}
+	}
+	
+	function OnResizeWindow(){
+		document.getElementById("right-click-cont").style.display = "none";
+		cutpasteshow = false;
+	}
+	
+	
+	
+	function currentfiledis(){
+		if(current_file!="") {
+			UIkit.modal.alert('<h3 style="margin-bottom: 5px; font-family: \'textz\';">File details</h3>Location : '+ current_file + '<br>File name : '+ current_file.split("/")[(current_file.split("/").length-1)] + '<br>File extension : '+ current_file.split(".")[1]).then(function () {
+               console.log('Alert closed.')
+           });
+		}
+		else showpop("File not saved");
+	}
+	
+
+	var isValid=(function(){
+	  var rg1=/^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
+	  var rg2=/^\./; // cannot start with dot (.)
+	  var rg3=/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names
+	  return function isValid(fname){
+		return rg1.test(fname)&&!rg2.test(fname)&&!rg3.test(fname);
+	  }
+	})();
+	
+	function closeapp(){
+		window.close();
+	}
+	
+	function minapp(){
+		const { remote } = require('electron')
+        remote.BrowserWindow.getFocusedWindow().minimize();
+	}
+
+	document.onkeydown = keydown; 
+
+	function keydown (evt) { 
+		if (!evt) evt = event; 
+		if (evt.ctrlKey && evt.keyCode === 82) {
+			evt.preventDefault();
+		}
+		else if (evt.ctrlKey && evt.keyCode === 82) {
+			//reloadiframe();
+			evt.preventDefault();
+		} 
+	}
+
+	function setCookie(cname, cvalue) {
+		const remote = require('electron').remote;
+		const app = remote.app;
+	    try { fs.writeFileSync((app.getPath('userData').split("\\").join("/")) + "/" + cname+".config", cvalue, 'utf-8'); return true;}
+	    catch(e) { err = e; return false; }
+	}
+
+	function getCookie(cname) {
+	  try {
+		  const remote = require('electron').remote;
+		  const app = remote.app;
+		  return fs.readFileSync(((app.getPath('userData').split("\\").join("/")) + "/" + cname + ".config"), 'utf8');
+	  }
+		catch (e) { return ""; }
+	}
+	
+
+
+</script>
+</body>
+</html>
+

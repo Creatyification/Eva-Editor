@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+<title>Eva Editor</title>
+<style type="text/css" media="screen">
+	:root {
+		--theme-color: #7F00FF;
+		--theme-color-dark: #8E2DE2;
+		--theme-color-scroll: #ffffff;
+	}
+	
+	::-webkit-scrollbar { width: 20px; height: 20px;}
+	::-webkit-scrollbar-button {  background-color: rgba(0,0,0,0); }
+	::-webkit-scrollbar-track {  background-color: rgba(0,0,0,0);}
+	::-webkit-scrollbar-track-piece { background-color: rgba(0,0,0,0);}
+	::-webkit-scrollbar-thumb { height: 50px; background-color: rgba(127,0,255,0.6); border: 7px solid var(--theme-color-scroll);  border-radius: 300px;  }
+	::-webkit-scrollbar-corner { background-color: rgba(0,0,0,0);}}
+	::-webkit-resizer { background-color: rgba(0,0,0,0);}
+	
+    #editor { 
+        position: absolute;
+        top: 40px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        scrollbar-face-color: #363636;
+		  scrollbar-base-color: #363636;
+		  scrollbar-3dlight-color: #363636;
+		  scrollbar-highlight-color: #363636;
+		  scrollbar-track-color: #000;
+		  scrollbar-arrow-color: #000;
+		  scrollbar-shadow-color: #363636;
+		  scrollbar-dark-shadow-color: #363636;
+    }
+    
+    .about-y{
+		color: #7F00FF !important;
+	}
+    
+    .topbar{
+		position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        box-shadow: 0 3px 20px 0 rgba(0,0,0,.35);
+        position: fixed;
+        background-color: #ffffff;
+        width: 100%;
+        height: 40px;
+        z-index: 999;
+        -webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.btn-icon{
+		font-size: 24px;
+		color: #999999;
+		height: 38px;
+		width: 40px;
+		outline:none;
+		background-color: rgba(0,0,0,0);
+		border: none;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.btn-icon:hover{
+		color: #7F00FF;
+		border: none;
+		outline:none;
+	}
+	
+	.btn-icon:active{
+		color: #7F00FF;
+		border: none;
+		outline:none;
+	}
+	
+	.btn-logo{
+		font-family: 'logo';
+		font-size: 28px;
+		color: #ffffff;
+		position: absolute;
+        top: 0;
+        left: 0;
+		height: 40px;
+		outline:none;
+		background: linear-gradient(to right, #7F00FF, #8E2DE2);
+		z-index: 999;
+		border: none;
+		margin-top: 0px;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.btn-close{
+		font-family: 'logo';
+		position: absolute;
+        top: 0;
+        right: 0;
+		outline:none;
+		z-index: 999;
+		margin-top: 0px;
+		font-size: 24px;
+		color: #999999;
+		height: 38px;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		width: 95px;
+		text-align: right;
+		background-color: rgba(0,0,0,0);
+		border: none;
+	}
+	
+	.logo-screen{
+		background: linear-gradient(to right, #7F00FF, #8E2DE2);
+		z-index: 9999999;
+		position: absolute;
+        top: 0;
+        right: 0;
+        -webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+        height: 100%;
+        width: 100%;
+	}
+	
+	.logo-con{
+		display: -webkit-box;
+		display: -ms-flexbox;
+		display: -webkit-flex;
+		display: flex;
+		-webkit-box-pack: center;
+		-ms-flex-pack: center;
+		-webkit-justify-content: center;
+		justify-content: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		-webkit-align-items: center;
+		align-items: center;
+		height: 100%;
+	}
+	
+	.closeer{
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		font-size: 30px;
+		color: #000000;
+		opacity: 0.5;
+		z-index: 9999999999999;
+	}
+	
+	.closeer:hover{
+		opacity: 0.7;
+	}
+	
+	.logo-pic{
+		width: 20%;
+		text-align: center;
+	}
+	
+	.text-screen{
+		position: absolute;
+        bottom: 3%;
+        right: 0;
+        width: 100%;
+        color: #ffffff;
+        text-align: center;
+        z-index: 999999999;
+	}
+	
+	.text-des{
+		color: #ffffff;
+		margin: 0 0 0 0;
+		font-family: 'textz';
+	}
+	
+	body{
+		font-family: 'textz' !important;
+		border: 5px solid #d6d6d6;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+	
+	.uk-width-auto{
+		width: 40px !important;
+	}
+	
+	a{
+	  -webkit-user-drag: none;
+	  -khtml-user-drag: none;
+	  -moz-user-drag: none;
+	  -o-user-drag: none;
+	  user-drag: none;
+	}
+	
+	.right-click-cont{
+		position: absolute;
+        top: 0;
+        display: none;
+        left: 0;
+		outline:none;
+		z-index: 99999999;
+		height: 100%;
+		width: 100%;
+		background-color: rgba(0,0,0,0);
+	}
+	
+	.right-click-menu{
+		position: absolute;
+        top: 0;
+        left: 0;
+		outline:none;
+		z-index: 9999999999;
+		height: auto;
+		width: auto;
+		padding: 10px 20px 10px 20px;
+		box-shadow: 0 3px 20px 0 rgba(0,0,0,.15);
+		background-color: #ffffff;
+		border-radius: 5px;
+	}
+	
+	.dark-key-lin a{
+		color: #999999 !important;
+	}
+	
+	#menu{
+		background: linear-gradient(to right, #7F00FF, #8E2DE2);
+		border-radius: 5px;
+		box-shadow: 0 3px 20px 0 rgba(0,0,0,.15);
+		margin-left: 10px;
+		
+	}
+	
+	.menu-link a{
+		color: #ffffff !important;
+	}
+	
+	.uk-notification {
+		width: 250px !important;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.uk-notification-message {
+		padding: 10px !important;
+		font-size: 0.98rem !important;
+	}
+	
+	.uk-notification-close {
+		top: 13px !important;
+	}
+	
+	.frame {position: absolute; z-index: 9999999999999; !important; top: 0px; left: 0px; right: 0; bottom: 0; display: none; }
+	.frame iframe {
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		transition: border-color 1s cubic-bezier(1, 1, 1, 1);
+		transition-delay: 0s;
+		-webkit-box-sizing: border-box;
+		display: block; width: 100%; height: 100%; 
+		border-left: 1px solid #d6d6d6;
+		border-right: 1px solid #d6d6d6;
+		border-bottom: 1px solid #d6d6d6;
+		z-index: 9999999999999;
+	}
+		
+	.errorMarker {
+		position:absolute;
+		background:rgba(127, 0, 255, 0.5);
+		color: #ffffff;
+		z-index:20
+	}
+	
+</style>
+<link rel="stylesheet" href="css/uikit.css" />
+<link rel="stylesheet" href="css/main.css" />
+<link rel="stylesheet" href="css/icons.css">
+<script src="js/jquery.js"></script>
+<script src="js/uikit.js"></script>
+</head>
+<body onload="setTimeout('fade()',2000); intsets();" oncontextmenu="return false" id="body" >
+<input type="file" id="file-input" />
+
+<div class="logo-screen" id="lc1">
+	<div class="logo-con">
+		<img class="logo-pic uk-align-center" src="images/logo.png">
+	</div>
+	<div class="text-screen" id="lc2">
+		<center>
+			<span class="uk-margin-small-right progress" uk-spinner></span>
+		</center>
+		<h5 class="text-des" style="font-size: 14px; opacity: 0.7; margin-top: 30px;">Powered by Creatyification</h5>
+		<h6 class="text-des" style="font-size: 10px; opacity: 0.5;">Licensed under a Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License.</h6>
+	</div>
+</div>
+
+
+
+<div class="loading" id="loading" style="display: none;"><div class="loding-cont"><center><span class="uk-margin-small-right progress" uk-spinner="ratio: 3"></span></center></div></div>
+<div class="topbar" id="tobar">
+	<div class="uk-child-width-8-8@m" uk-grid>
+		<div class="uk-width-auto" style="width: 60px !important;">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon icon-folder" onclick='document.getElementById("file-input").click();' uk-tooltip="title: Open file"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon icon-save" onclick='save()' uk-tooltip="title: Save"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon icon-undo" onclick='editor.undo();' uk-tooltip="title: Undo"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon icon-redo" onclick='editor.redo();' uk-tooltip="title: Redo"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon icon-play_circle_filled" onclick='run()' uk-tooltip="title: Quick run"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon icon-play_circle_outline" onclick='openbrow()' uk-tooltip="title: Run in browser"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon"></button>
+		</div>
+		<div class="uk-width-expand" style="-webkit-app-region: drag;">
+			<button class="btn-icon" onclick='openbrow()' uk-tooltip="title: Run in browser"></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon" ></button>
+		</div>
+		<div class="uk-width-auto">
+			<button class="btn-icon" ></button>
+		</div>
+	</div>
+</div>
+<button class="btn-logo" id="eva">eva</button>
+
+<div uk-dropdown="mode: click" id="menu">
+    <ul class="uk-nav uk-dropdown-nav">
+        <li class="uk-active menu-link" onclick="saveas()"><a href="#">Save as</a></li>
+        <li class="uk-active menu-link" onclick="currentfiledis()"><a href="#">Curent file</a></li>
+        <li class="uk-active menu-link" onclick="beautifycode()"><a href="#">Beautify code</a></li>
+        <li class="uk-active menu-link" onclick="enabledisarkmode()"><a href="#" id="en-dar-mod">Enable dark mode</a></li>
+        <li class="uk-active menu-link" onclick="UIkit.modal('#modal-shortcuts').show();"><a href="#">Keyboard shortcuts</a></li>
+        <li class="uk-active menu-link" onclick="editor.setValue('<html>\n\t<head>\n\t\t<title></title>\n\t</head>\n\t<body>\n\t\t\n\t</body>\n</html>', -1);"><a href="#">Insert template</a></li>
+		<li class="uk-active menu-link" onclick="UIkit.modal('#modal-about').show();"><a href="#">About</a></li>
+    </ul>
+</div>
+
+<div class="btn-close">
+	<button class="btn-icon icon-remove" onclick='minapp()' style="width: 35px !important; text-align: right;"></button>
+	<button class="btn-icon icon-close" onclick='closeapp()' style="width: 35px !important; text-align: right;"></button>
+</div>
+
+
+
+
+<div id="editor" onmousedown="WhichButton(event)"></div>
+
+<div class="right-click-cont" id="right-click-cont" onclick='document.getElementById("right-click-cont").style.display = "none"; cutpasteshow=false; try {editor.session.removeMarker(lineerrordisp);} catch (e){  }'>
+	<div class="right-click-menu" id="right-click-menu">
+		<ul class="uk-nav uk-dropdown-nav">
+			<li class="uk-active dark-key-lin"><a onclick="copy()">Copy</a></li>
+			<li class="uk-active dark-key-lin"><a onclick="cut()">Cut</a></li>
+			<li class="uk-active dark-key-lin"><a onclick="paste()">Paste</a></li>
+		</ul>
+	</div>
+</div>
+
+
+<div id="modal-save-mod" uk-modal class="uk-dark" >
+<div class="uk-modal-dialog uk-dark" id="save-theme">
+
+	<button class="uk-modal-close-default uk-dark" uk-tooltip="title: close (Esc)" type="button" uk-close></button>
+
+	<div class="uk-modal-header uk-dark">
+		<h2 class="uk-modal-title alert-heading uk-dark">Save file</h2>
+	</div>
+	
+	<div class="uk-modal-body uk-dark" uk-overflow-auto>
+		<div class="uk-margin uk-dark">
+			<label class="uk-form-label" for="form-stacked-text">File name</label>
+			<div class="uk-form-controls">
+				<input class="uk-input" id="file-pick-name" type="text" placeholder="eg: hello.html">
+			</div>
+		</div>
+		
+		<div class="uk-margin uk-dark">
+			<label class="uk-form-label" for="form-stacked-text">File path</label>
+		</div>
+		<div class="uk-margin uk-dark">
+			<div uk-form-custom="target: true">
+				<input type="file" webkitdirectory directory id="folderpick">
+				<input class="uk-input uk-form-width-medium" id="folderpick-name" type="text" placeholder="Desktop" disabled>
+			</div>
+		</div>
+	</div>
+
+	<div class="uk-modal-footer uk-text-right">
+		<button class="uk-button uk-button-default" type="button" onclick="savedailogfun()">Save</button>
+		<button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+	</div>
+
+	</div>
+</div>
+
+
+<div id="modal-shortcuts" uk-modal class="uk-dark" >
+<div class="uk-modal-dialog uk-dark" id="shortcut-theme">
+
+	<button class="uk-modal-close-default uk-dark" uk-tooltip="title: close (Esc)" type="button" uk-close></button>
+
+	<div class="uk-modal-header uk-dark">
+		<h2 class="uk-modal-title alert-heading uk-dark">Shortcuts</h2>
+	</div>
+	
+	<div class="uk-modal-body uk-dark" uk-overflow-auto>
+		<div class="uk-margin uk-dark">
+			Run : Ctrl-R
+			<br>Open : Ctrl-O
+			<br>Save : Ctrl-S
+			<br>Selectall : Ctrl-A
+			<br>Gotoline : Ctrl-L
+			<br>Fold : Alt-L|Ctrl-F1
+			<br>Unfold : Alt-Shift-L|Ctrl-Shift-F1
+			<br>ToggleFoldWidget : F2
+			<br>ToggleParentFoldWidget : Alt-F2
+			<br>FoldOther : Alt-0
+			<br>Unfoldall : Alt-Shift-0
+			<br>Findnext : Ctrl-K
+			<br>Findprevious : Ctrl-Shift-K
+			<br>SelectOrFindNext : Alt-K
+			<br>SelectOrFindPrevious : Alt-Shift-K
+			<br>Find : Ctrl-F
+			<br>Overwrite : Insert
+			<br>Selecttostart : Ctrl-Shift-Home
+			<br>Gotostart : Ctrl-Home
+			<br>Selectup : Shift-Up
+			<br>Golineup : Up
+			<br>Selecttoend : Ctrl-Shift-End
+			<br>Gotoend : Ctrl-End
+			<br>Selectdown : Shift-Down
+			<br>Golinedown : Down
+			<br>Selectwordleft : Ctrl-Shift-Left
+			<br>Gotowordleft : Ctrl-Left
+			<br>Selecttolinestart : Alt-Shift-Left
+			<br>gotolinestart : Alt-Left|Home
+			<br>selectleft : Shift-Left
+			<br>gotoleft : Left
+			<br>selectwordright : Ctrl-Shift-Right
+			<br>gotowordright : Ctrl-Right
+			<br>selecttolineend : Alt-Shift-Right
+			<br>gotolineend : Alt-Right|End
+			<br>selectright : Shift-Right
+			<br>gotoright : Right
+			<br>selectpagedown : Shift-Pagedown
+			<br>gotopagedown : Pagedown
+			<br>selectpageup : Shift-Pageup
+			<br>gotopageup : Pageup
+			<br>scrollup : Ctrl-Up
+			<br>scrolldown : Ctrl-Down
+			<br>selectlinestart : Shift-Home
+			<br>selectlineend : Shift-End
+			<br>togglerecording : Ctrl-Alt-E
+			<br>replaymacro : Ctrl-Shift-E
+			<br>jumptomatching : Ctrl-P
+			<br>selecttomatching : Ctrl-Shift-P
+			<br>expandToMatching : Ctrl-Shift-M
+			<br>removeline : Ctrl-D
+			<br>duplicateSelection : Ctrl-Shift-D
+			<br>sortlines : Ctrl-Alt-S
+			<br>togglecomment : Ctrl-/
+			<br>toggleBlockComment : Ctrl-Shift-/
+			<br>modifyNumberUp : Ctrl-Shift-Up
+			<br>modifyNumberDown : Ctrl-Shift-Down
+			<br>replace : Ctrl-H
+			<br>undo : Ctrl-Z
+			<br>redo : Ctrl-Shift-Z|Ctrl-Y
+			<br>copylinesup : Alt-Shift-Up
+			<br>movelinesup : Alt-Up
+			<br>copylinesdown : Alt-Shift-Down
+			<br>movelinesdown : Alt-Down
+			<br>del : Delete
+			<br>backspace : Shift-Backspace|Backspace
+			<br>cut_or_delete : Shift-Delete
+			<br>removetolinestart : Alt-Backspace
+			<br>removetolineend : Alt-Delete
+			<br>removetolinestarthard : Ctrl-Shift-Backspace
+			<br>removetolineendhard : Ctrl-Shift-Delete
+			<br>removewordleft : Ctrl-Backspace
+			<br>removewordright : Ctrl-Delete
+			<br>outdent : Shift-Tab
+			<br>indent : Tab
+			<br>blockoutdent : Ctrl-[
+			<br>blockindent : Ctrl-]
+			<br>transposeletters : Alt-Shift-X
+			<br>touppercase : Ctrl-U
+			<br>tolowercase : Ctrl-Shift-U
+			<br>expandtoline : Ctrl-Shift-L
+			<br>addCursorAbove : Ctrl-Alt-Up
+			<br>addCursorBelow : Ctrl-Alt-Down
+			<br>addCursorAboveSkipCurrent : Ctrl-Alt-Shift-Up
+			<br>addCursorBelowSkipCurrent : Ctrl-Alt-Shift-Down
+			<br>selectMoreBefore : Ctrl-Alt-Left
+			<br>selectMoreAfter : Ctrl-Alt-Right
+			<br>selectNextBefore : Ctrl-Alt-Shift-Left
+			<br>selectNextAfter : Ctrl-Alt-Shift-Right
+			<br>splitIntoLines : Ctrl-Alt-L
+			<br>alignCursors : Ctrl-Alt-A
+			<br>findAll : Ctrl-Alt-
+		</div>
+	</div>
+
+	<div class="uk-modal-footer uk-text-right">
+		<button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+	</div>
+
+	</div>
+</div>
+
+<div id="modal-about" uk-modal class="uk-dark" >
+<div class="uk-modal-dialog uk-dark" id="about-theme">
+
+	<button class="uk-modal-close-default uk-dark" uk-tooltip="title: close (Esc)" type="button" uk-close></button>
+
+	<div class="uk-modal-header uk-dark" id="about-theme2">
+		<h2 class="uk-modal-title alert-heading uk-dark">About</h2>
+	</div>
+	
+	<div class="uk-modal-body uk-dark" uk-overflow-auto>
+		<div class="uk-margin uk-dark">
+			<center>
+				<img style="width: 17%;" src="images/icon.png">
+				<h4 class="uk-modal-title alert-heading uk-dark" style="margin-top: 3px; font-size: 20px !important;">Eva v3.67b</h4>
+				<br>
+				<h4 class="uk-modal-title alert-heading uk-dark" style="margin-top: 3px; font-size: 15px !important;">Eva editor is a project created and hosted by Creatyification. Copyright protections applied to some assets used in the application</h4>
+				</center>
+				<br>
+				<ul class="uk-list uk-list-divider">
+					<li><b class="about-y">Developed by</b><br><span class="about-z">Creatyification Team</span></li>
+					<li><b class="about-y">Chief developer</b><br><span class="about-z">Nikhil Babychan</span></li>
+					<li><b class="about-y">Version</b><br><span class="about-z">3.67b</span></li>
+					<li><b class="about-y">Website</b><br><span class="about-z">www.creatyification.com</span></li>
+					<li><b class="about-y">Email</b><br><span class="about-z">support.creatyification.com</span></li>
+					<li><b class="about-y">Like our facebook page</b><br><span class="about-z">/Creatyification</span></li>
+					<li><b class="about-y">Follo us on twitter</b><br><span class="about-z">@creatyification</span></li>
+				</ul>
+
+		</div>
+	</div>
+
+	<div class="uk-modal-footer uk-text-right" id="about-theme1">
+		<button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
+	</div>
+
+	</div>
+</div>
+
+
+<div class="frame" id="pokey">
+	<iframe id="iframe"></iframe> 
+    <span class="closeer icon-close" onclick="document.getElementById('pokey').style.display = 'none';"></span>
+</div>
+    
+<script src="src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/beautify.js" crossorigin="anonymous"></script>
+<script src="js/beautify-html.js" crossorigin="anonymous"></script>
+<script>
+	var cutpasteshow = false;
+	var fs = require('fs');
+	var current_file = "";
+	var current_file_saveas = false;
+	
+	//document.addEventListener('dragover', event => event.preventDefault())
+	//document.addEventListener('drop', event => event.preventDefault())
+	
+	document.ondragover = document.getElementById("editor").ondragenter = function(evt) { evt.preventDefault();};
+	
+	document.getElementById("editor").ondrop = function(evt) {
+		evt.preventDefault();
+	 
+		var file = event.dataTransfer.files[0];
+		  f = event.dataTransfer.files[0];
+		  extenss = f.name.split(".")[f.name.split(".").length-1];
+		  if(extenss=="html" || extenss=="htm" || extenss=="css" || extenss=="js"){
+			  current_file = f.path;
+			  if (!file) {
+				return;
+			  }
+			  var reader = new FileReader();
+			  reader.onload = function(e) {
+				var contents = e.target.result;
+				displayContents(contents);
+			  };
+			  reader.readAsText(file);
+			} else showpop("File not supported");
+	};
+	
+	const ipc = require('electron').ipcRenderer;
+
+	ipc.on('errorline', (event, message) => {
+		errorLine(message);
+	});
+	
+	function intsets(){
+		if(getCookie("theme")=="dark"){ darkmode();
+			document.getElementById("en-dar-mod").innerText = "Disable dark mode";
+			var html = document.getElementsByTagName('html')[0];
+			html.style.setProperty("--theme-color-scroll", "#2c2828");
+		}
+		if(getCookie("theme")==""){
+			setCookie("theme", "lite");
+		}
+	}
+	
+	function enabledisarkmode(){
+		if(getCookie("theme")=="dark"){
+			litemode();
+			setCookie("theme", "lite");
+			document.getElementById("en-dar-mod").innerText = "Enable dark mode";
+		}
+		else {
+			darkmode();
+			setCookie("theme", "dark");
+			document.getElementById("en-dar-mod").innerText = "Disable dark mode";
+		}
+	}
+	
+	function savedailogfun(){
+		name = document.getElementById("file-pick-name").value;
+		if(name=="" || name==null ) showpop("Enter a file name");
+		else if(!isValid(name)) showpop("Enter a valid file name");
+		else if(name.split(".")[1]=="html" || name.split(".")[1]=="htm" || name.split(".")[1]=="css" || name.split(".")[1]=="js"){
+			if(document.getElementById("folderpick-name").value==""){
+				current_file = (getUserHome().split("\\").join("/")) +"/Desktop/" + document.getElementById("file-pick-name").value;
+				UIkit.modal('#modal-save-mod').hide();
+				document.getElementById("file-pick-name").value = "";
+				save();
+			} else {
+				var folder = document.getElementById("folderpick");
+				files = folder.files;
+				current_file = (files[0].path.split("\\").join("/")) +"/" + document.getElementById("file-pick-name").value;
+				UIkit.modal('#modal-save-mod').hide();
+				document.getElementById("file-pick-name").value = "";
+				save();
+			}
+		} else {
+			showpop("Enter a valid file extension");
+		}
+	}
+	
+	
+    var editor = ace.edit("editor");
+    beautify = ace.require("ace/ext/beautify");
+    editor.setOptions({
+	  fontSize: "12pt"
+	});
+    editor.setTheme("ace/theme/textmate");
+    editor.session.setMode("ace/mode/html");
+    
+    function readSingleFile(e) {
+	  var file = e.target.files[0];
+	  f = e.target.files[0];
+	  extenss = f.name.split(".")[f.name.split(".").length-1];
+	  if(extenss=="html" || extenss=="htm" || extenss=="css" || extenss=="js"){
+		  current_file = f.path;
+		  if (!file) {
+			return;
+		  }
+		  var reader = new FileReader();
+		  reader.onload = function(e) {
+			var contents = e.target.result;
+			displayContents(contents);
+		  };
+		  reader.readAsText(file);
+		} else showpop("File not supported");
+	}
+
+	function displayContents(contents) {
+		current_file = current_file.split("\\").join("/");
+		editor.setValue(contents, -1);
+		document.getElementById('eva').setAttribute("uk-tooltip", "title: " + GetFilename(current_file) );
+		showpop("File opened");
+	}
+
+	document.getElementById('file-input').addEventListener('change', readSingleFile, false);
+	
+	function save(){
+		if(current_file=="" || current_file_saveas){
+			if(editor.getValue()=="") showpop("Write someting first");
+			else UIkit.modal('#modal-save-mod').show();
+			current_file_saveas = false;
+		} else {
+			try { fs.writeFileSync(current_file, editor.getValue(), 'utf-8');  showpop("Saved");}
+			catch(e) { err = e; showpop("Failed to save the file"); }
+			document.getElementById('eva').setAttribute("uk-tooltip", "title: " + GetFilename(current_file) );
+		}
+	}
+	
+	function GetFilename(url)
+	{
+	   return url.split("/")[(url.split("/").length-1)];
+	}
+	
+	function saveas(){
+		current_file_saveas = true;
+		save();
+	}
+	
+	function errorLine(line){
+		var Range = ace.require('ace/range').Range;
+		try {
+			editor.session.removeMarker(lineerrordisp);
+		} catch (e){  }
+		lineerrordisp = editor.session.addMarker(new Range(line, 0, line, 1), "errorMarker", "fullLine");
+	}
+	
+	function openfile(){
+		document.getElementById('file-input').click();
+	}
+	
+	function showpop(c){
+		UIkit.notification(c, {pos: 'bottom-right'});
+	}
+	
+	function getUserHome() {
+	  return process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
+	}
+	
+	function run(){
+		try {
+			editor.session.removeMarker(lineerrordisp);
+		} catch (e){  }
+		if(editor.getValue().indexOf("pikachu")>-1){
+			document.getElementById('iframe').src = "pok.html";
+			 document.getElementById('pokey').style.display = 'block';
+		 }
+		else if(editor.getValue().indexOf("supermariogame")>-1) window.open("key/index.html","mywindow","resizable=0,width=640,height=500");
+		else if(current_file!=""){
+			save();
+			const { remote } = require('electron')
+			if(remote.BrowserWindow.getAllWindows()[1]!=null){
+				remote.BrowserWindow.getAllWindows()[1].send("file", "file://"+current_file);
+				remote.BrowserWindow.getAllWindows()[1].focus();
+			}
+			else runwin = window.open("run.html?file=file://"+current_file);
+		}
+		else showpop("File not saved");
+	}
+	
+	
+
+	function openbrow(){
+		if(current_file!="") require("electron").shell.openExternal("file://"+current_file);
+		else showpop("File not saved");
+	}
+	
+	function fade() {
+		element = document.getElementById('lc1');
+		var op = 1;  // initial opacity
+		var timer = setInterval(function () {
+			if (op <= 0.1){
+				clearInterval(timer);
+				element.style.display = 'none';
+			}
+			element.style.opacity = op;
+			element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+			op -= op * 0.1;
+		}, 50);
+	}
+	
+	function WhichButton(event) {
+		if(event.button==2){
+			//UIkit.dropdown("#rightclick").show();
+			document.getElementById("right-click-cont").style.display = "block";
+			document.getElementById("right-click-menu").style.top = event.clientY + "px";
+			document.getElementById("right-click-menu").style.left = event.clientX + "px";
+			cutpasteshow = true;
+			return 0;
+		}
+	}
+	
+	function OnResizeWindow(){
+		document.getElementById("right-click-cont").style.display = "none";
+		cutpasteshow = false;
+	}
+	document.body.onresize = function (){ OnResizeWindow(); };
+	
+	function copy(){
+		const {clipboard} = require('electron');
+		clipboard.writeText(editor.getCopyText());
+	}
+	
+	function cut(){
+		const {clipboard} = require('electron');
+		clipboard.writeText(editor.getCopyText());
+		editor.insert("");
+	}
+	
+	function paste(){
+		const {clipboard} = require('electron');
+		editor.insert(clipboard.readText());
+	}
+	
+	function currentfiledis(){
+		if(current_file!="") {
+			UIkit.modal.alert('<h3 style="margin-bottom: 5px; font-family: \'textz\';">File details</h3>Location : '+ current_file + '<br>File name : '+ current_file.split("/")[(current_file.split("/").length-1)] + '<br>File extension : '+ current_file.split(".")[1]).then(function () {
+               console.log('Alert closed.')
+           });
+		}
+		else showpop("File not saved");
+	}
+	
+	function setCookie(cname, cvalue) {
+		const remote = require('electron').remote;
+		const app = remote.app;
+	    try { fs.writeFileSync((app.getPath('userData').split("\\").join("/")) + "/" + cname+".config", cvalue, 'utf-8'); return true;}
+	    catch(e) { err = e; return false; }
+	}
+
+	function getCookie(cname) {
+	  try {
+		  const remote = require('electron').remote;
+		  const app = remote.app;
+		  return fs.readFileSync(((app.getPath('userData').split("\\").join("/")) + "/" + cname + ".config"), 'utf8');
+	  }
+		catch (e) { return ""; }
+	}
+	
+	function darkmode(){
+		document.getElementById('tobar').style.backgroundColor = "#363636";
+		document.getElementById('right-click-menu').style.backgroundColor = "#363636";
+		document.getElementById('editor').style.border = "none";
+		document.getElementById('shortcut-theme').style.filter = "invert(100%)";
+		document.getElementById('save-theme').style.filter = "invert(100%)";
+		document.getElementById('about-theme2').style.filter = "invert(100%)";
+		document.getElementById('about-theme1').style.filter = "invert(100%)";
+		document.getElementById('about-theme').style.backgroundColor = "#2c2828";
+		var html = document.getElementsByTagName('html')[0];
+		html.style.setProperty("--theme-color-scroll", "#2c2828");
+		editor.setTheme("ace/theme/pastel_on_dark");
+		showpop("Dark mode activated");
+		setCookie("theme", "dark");
+	}
+	
+	function litemode(){
+		document.getElementById('tobar').style.backgroundColor = "#ffffff";
+		document.getElementById('right-click-menu').style.backgroundColor = "#ffffff";
+		document.getElementById('editor').style.borderLeft = "1px solid #d6d6d6";
+		document.getElementById('editor').style.borderBottom = "1px solid #d6d6d6";
+		document.getElementById('editor').style.borderRight = "1px solid #d6d6d6";
+		document.getElementById('about-theme').style.backgroundColor = "#fffffff";
+		var html = document.getElementsByTagName('html')[0];
+		html.style.setProperty("--theme-color-scroll", "#ffffff");
+		document.getElementById('shortcut-theme').style.filter = "none";
+		document.getElementById('save-theme').style.filter = "none";
+		document.getElementById('about-theme2').style.filter = "none";
+		document.getElementById('about-theme1').style.filter = "none";
+		editor.setTheme("ace/theme/textmate");
+		showpop("Ligth mode activated");
+		setCookie("theme", "lite");
+	}
+	
+	var isValid=(function(){
+	  var rg1=/^[^\\/:\*\?"<>\|]+$/; // forbidden characters \ / : * ? " < > |
+	  var rg2=/^\./; // cannot start with dot (.)
+	  var rg3=/^(nul|prn|con|lpt[0-9]|com[0-9])(\.|$)/i; // forbidden file names
+	  return function isValid(fname){
+		return rg1.test(fname)&&!rg2.test(fname)&&!rg3.test(fname);
+	  }
+	})();
+	
+	function closeapp(){
+		window.close();
+	}
+	
+	function minapp(){
+		const { remote } = require('electron')
+        remote.BrowserWindow.getFocusedWindow().minimize();
+	}
+	
+	function goto(){
+		UIkit.modal.prompt('Line number (1-'+editor.session.getLength()+')', '').then(function (name) {
+		   if(name>0 && name<=editor.session.getLength()){
+			   editor.scrollToLine(name, true, true, function () {});
+			   editor.gotoLine(name, 0, true);
+		   } else showpop("Invalid line number");
+		});
+	}
+	
+	function beautifycode(){
+		code = html_beautify(editor.getValue(), {
+			indent_size: 2
+		});
+		editor.setValue(code, -1);
+		showpop("Beautified");
+	}
+	
+
+document.onkeydown = keydown; 
+
+function keydown (evt) { 
+    if (!evt) evt = event; 
+    if (evt.ctrlKey && evt.keyCode === 83) {
+        save();
+        evt.preventDefault();
+    }
+    else if (evt.ctrlKey && evt.keyCode === 82) {
+		run();
+		evt.preventDefault();
+    } 
+    else if (evt.ctrlKey && evt.keyCode === 71) {
+		goto();
+		evt.preventDefault();
+    } 
+    else if (evt.ctrlKey && evt.keyCode === 79) {
+		document.getElementById("file-input").click();
+		evt.preventDefault();
+    } 
+}
+
+
+</script>
+</body>
+</html>
+

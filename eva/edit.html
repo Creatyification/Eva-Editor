@@ -762,12 +762,7 @@
 		try {
 			editor.session.removeMarker(lineerrordisp);
 		} catch (e){  }
-		if(editor.getValue().indexOf("pikachu")>-1){
-			document.getElementById('iframe').src = "pok.html";
-			 document.getElementById('pokey').style.display = 'block';
-		 }
-		else if(editor.getValue().indexOf("supermariogame")>-1) window.open("key/index.html","mywindow","resizable=0,width=640,height=500");
-		else if(current_file!=""){
+	        if(current_file!=""){
 			save();
 			const { remote } = require('electron')
 			if(remote.BrowserWindow.getAllWindows()[1]!=null){
